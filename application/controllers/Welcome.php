@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use FacebookAds\Api;
+use FacebookAds\Logger\CurlLogger;
+use FacebookAds\Object\AdAccount;
+use FacebookAds\Object\Campaign;
+use FacebookAds\Object\Fields\CampaignFields;
+
 class Welcome extends CI_Controller {
 
 	/**
@@ -18,8 +24,21 @@ class Welcome extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
+
+	public function __construct()
 	{
-		$this->load->view('welcome_message');
+		parent::__construct();
+
+		$this->app_id					=	$this->config->item('app_id');
+		$this->app_secret 				=	$this->config->item('app_secret');
+		$this->access_token	=	$this->config->item('app_system_access_token');
+	}
+
+	public function index()
+	{		
+		// $this->load->view('welcome_message');
+
+		Api::init($this->app_id, $this->app_secret, $this->access_token);
+
 	}
 }
